@@ -1,13 +1,13 @@
 namespace ProjectX.Api.Entities
 {
-    public record TaskItem
+    public record TodoItem
     {
         public Guid Id { get; init; }
 
         public string Name { get; init; }
 
-        public string Task { get; init; }
+        public string Todo { get; init; }
 
-        public DateTimeOffset TaskDateTime { get; init; }
+        public DateTimeOffset TodoDateTime { get; init; }
     }
 }
