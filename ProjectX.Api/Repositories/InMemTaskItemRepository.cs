@@ -2,7 +2,8 @@ using ProjectX.Api.Entities;
 
 namespace ProjectX.Api.Repositories
 {
-    public class InMemTaskItemRepository
+
+    public class InMemTaskItemRepository : IInMemTaskItemRepository
     {
         private readonly List<TaskItem> taskitems = new List<TaskItem>()
         {

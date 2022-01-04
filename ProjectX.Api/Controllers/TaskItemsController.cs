@@ -8,11 +8,11 @@ namespace ProjectX.Api.Controllers
     [Route("TaskItems")]
     public class TaskItemsController : ControllerBase
     {
-        private readonly InMemTaskItemRepository repository;
+        private readonly IInMemTaskItemRepository repository;
 
-        public TaskItemsController()
+        public TaskItemsController(IInMemTaskItemRepository repository)
         {
-            repository = new InMemTaskItemRepository();
+            this.repository = repository;
         }
 
         // Get / TaskItems
