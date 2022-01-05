@@ -29,5 +29,17 @@ namespace ProjectX.Api.Repositories
         {
             todoItems.Add(todoItem);
         }
+
+        public void UpdateTodoItem(TodoItem todoItem)
+        {
+            var index = todoItems.FindIndex(existingTodoItem => existingTodoItem.Id == todoItem.Id);
+            todoItems[index] = todoItem;
+        }
+
+        public void DeleteTodoItem(Guid id)
+        {
+            var index = todoItems.FindIndex(existingTodoItem => existingTodoItem.Id == id);
+            todoItems.RemoveAt(index);
+        }
     }
 }

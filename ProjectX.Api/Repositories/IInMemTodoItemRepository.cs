@@ -7,5 +7,7 @@ namespace ProjectX.Api.Repositories
         TodoItem GetTodoItem(Guid id);
         IEnumerable<TodoItem> GetTodoItems();
         void CreateTodoItem(TodoItem todoItem);
+        void UpdateTodoItem(TodoItem todoItem);
+        void DeleteTodoItem(Guid id);
     }
 }
