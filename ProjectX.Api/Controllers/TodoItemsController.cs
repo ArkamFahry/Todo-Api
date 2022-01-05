@@ -20,9 +20,9 @@ namespace ProjectX.Api.Controllers
         // Get / TodoItem
         // use to get all tasks
         [HttpGet]
-        public IEnumerable<TodoItemDto> GetTodoItem()
+        public IEnumerable<TodoItemDto> GetTodoItems()
         {
-            var todoItems = repository.GetTodoItem().Select(todoItem => todoItem.AsDto());
+            var todoItems = repository.GetTodoItems().Select(todoItem => todoItem.AsDto());
             return todoItems;
         }
 

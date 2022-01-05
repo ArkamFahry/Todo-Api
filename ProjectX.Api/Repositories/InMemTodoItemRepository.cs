@@ -5,21 +5,29 @@ namespace ProjectX.Api.Repositories
 
     public class InMemTodoItemRepository : IInMemTodoItemRepository
     {
-        private readonly List<TodoItem> todoItem = new List<TodoItem>()
+        private readonly List<TodoItem> todoItems = new List<TodoItem>()
         {
             new TodoItem { Id = Guid.NewGuid(), Name = "Arkam", Todo = "Don't do any thing", TodoDateTime = DateTimeOffset.UtcNow },
             new TodoItem { Id = Guid.NewGuid(), Name = "Brkam", Todo = "Do any thing", TodoDateTime = DateTimeOffset.UtcNow },
             new TodoItem { Id = Guid.NewGuid(), Name = "Crkam", Todo = "Do Something thing", TodoDateTime = DateTimeOffset.UtcNow },
         };
 
-        public IEnumerable<TodoItem> GetTodoItem()
-        {
-            return todoItem;
-        }
-
+        // gets one specifice items
         public TodoItem GetTodoItem(Guid id)
         {
-            return todoItem.Where(TodoItem => TodoItem.Id == id).SingleOrDefault();
+            return todoItems.Where(TodoItem => TodoItem.Id == id).SingleOrDefault();
+        }
+
+        // gets all the items
+        public IEnumerable<TodoItem> GetTodoItems()
+        {
+            return todoItems;
+        }
+
+        //creates a single item
+        public void CreateTodoItem(TodoItem todoItem)
+        {
+            todoItems.Add(todoItem);
         }
     }
 }
