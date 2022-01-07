@@ -4,10 +4,10 @@ namespace ProjectX.Api.Repositories
 {
     public interface IInMemTodoItemRepository
     {
-        TodoItem GetTodoItem(Guid id);
-        IEnumerable<TodoItem> GetTodoItems();
-        void CreateTodoItem(TodoItem todoItem);
-        void UpdateTodoItem(TodoItem todoItem);
-        void DeleteTodoItem(Guid id);
+        Task<TodoItem> GetTodoItemAsync(Guid id);
+        Task<IEnumerable<TodoItem>> GetTodoItemsAsync();
+        Task CreateTodoItemAsync(TodoItem todoItem);
+        Task UpdateTodoItemAsync(TodoItem todoItem);
+        Task DeleteTodoItemAsync(Guid id);
     }
 }

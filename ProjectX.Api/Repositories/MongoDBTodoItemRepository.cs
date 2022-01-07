@@ -20,32 +20,32 @@ namespace ProjectX.Api.Repositories
             todoItemsCollection = database.GetCollection<TodoItem>(collectionName);
         }
 
-        public void CreateTodoItem(TodoItem todoItem)
+        public async Task CreateTodoItemAsync(TodoItem todoItem)
         {
-            todoItemsCollection.InsertOne(todoItem);
+            await todoItemsCollection.InsertOneAsync(todoItem);
         }
 
-        public void DeleteTodoItem(Guid id)
-        {
-            var filter = filterDefinitionBuilder.Eq(item => item.Id, id);
-            todoItemsCollection.DeleteOne(filter);
-        }
-
-        public TodoItem GetTodoItem(Guid id)
+        public async Task DeleteTodoItemAsync(Guid id)
         {
             var filter = filterDefinitionBuilder.Eq(item => item.Id, id);
-            return todoItemsCollection.Find(filter).SingleOrDefault();
+            await todoItemsCollection.DeleteOneAsync(filter);
         }
 
-        public IEnumerable<TodoItem> GetTodoItems()
+        public async Task<TodoItem> GetTodoItemAsync(Guid id)
         {
-            return todoItemsCollection.Find(new BsonDocument()).ToList();
+            var filter = filterDefinitionBuilder.Eq(item => item.Id, id);
+            return await todoItemsCollection.Find(filter).SingleOrDefaultAsync();
         }
 
-        public void UpdateTodoItem(TodoItem todoItem)
+        public async Task<IEnumerable<TodoItem>> GetTodoItemsAsync()
+        {
+            return await todoItemsCollection.Find(new BsonDocument()).ToListAsync();
+        }
+
+        public async Task UpdateTodoItemAsync(TodoItem todoItem)
         {
             var filter = filterDefinitionBuilder.Eq(existingitem => existingitem.Id, todoItem.Id);
-            todoItemsCollection.ReplaceOne(filter, todoItem);
+            await todoItemsCollection.ReplaceOneAsync(filter, todoItem);
         }
     }
 }

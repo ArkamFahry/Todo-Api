@@ -20,30 +20,30 @@ namespace ProjectX.Api.Controllers
         // Get / TodoItems
         // use to get all tasks
         [HttpGet]
-        public IEnumerable<TodoItemDto> GetTodoItems()
+        public async Task<IEnumerable<TodoItemDto>> GetTodoItemsAsync()
         {
-            var todoItems = repository.GetTodoItems().Select(todoItem => todoItem.AsDto());
+            var todoItems = (await repository.GetTodoItemsAsync()).Select(todoItem => todoItem.AsDto());
             return todoItems;
         }
 
         // Get / TodoItems / {id}
         // use to get a single task
         [HttpGet("{id}")]
-        public ActionResult<TodoItemDto> GetTodoItem(Guid id)
+        public async Task<ActionResult<TodoItemDto>> GetTodoItemAsync(Guid id)
         {
-            var todoitem = repository.GetTodoItem(id).AsDto();
+            var todoitem = await repository.GetTodoItemAsync(id);
 
             if (todoitem is null)
             {
                 return NotFound();
             }
 
-            return todoitem;
+            return todoitem.AsDto();
         }
 
         // Post / TodoItems
         [HttpPost]
-        public ActionResult<TodoItemDto> CreateTodoItem(CreateTodoItemDto todoItemDto)
+        public async Task<ActionResult<TodoItemDto>> CreateTodoItemAsync(CreateTodoItemDto todoItemDto)
         {
             TodoItem todoItem = new()
             {
@@ -53,16 +53,16 @@ namespace ProjectX.Api.Controllers
                 TodoDateTime = DateTimeOffset.UtcNow
             };
 
-            repository.CreateTodoItem(todoItem);
+            await repository.CreateTodoItemAsync(todoItem);
 
-            return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.Id }, todoItem.AsDto());
+            return CreatedAtAction(nameof(GetTodoItemAsync), new { id = todoItem.Id }, todoItem.AsDto());
         }
 
         // Put / TodoItems / {id}
         [HttpPut("{id}")]
-        public ActionResult UpdateTodoItem(Guid id, UpdateTodoItemDto updateTodoItemDto)
+        public async Task<ActionResult> UpdateTodoItemAsync(Guid id, UpdateTodoItemDto updateTodoItemDto)
         {
-            var existingTodoItem = repository.GetTodoItem(id);
+            var existingTodoItem = await repository.GetTodoItemAsync(id);
 
             if (existingTodoItem is null)
             {
@@ -75,23 +75,23 @@ namespace ProjectX.Api.Controllers
                 Todo = updateTodoItemDto.Todo
             };
 
-            repository.UpdateTodoItem(updatedTodoItem);
+            await repository.UpdateTodoItemAsync(updatedTodoItem);
 
             return NoContent();
         }
 
         // Delete / TodoItems / {id}
         [HttpDelete("{id}")]
-        public ActionResult DeleteTodoItem(Guid id)
+        public async Task<ActionResult> DeleteTodoItemAsync(Guid id)
         {
-            var existingTodoItem = repository.GetTodoItem(id);
+            var existingTodoItem = await repository.GetTodoItemAsync(id);
 
             if (existingTodoItem is null)
             {
                 return NotFound();
             }
 
-            repository.DeleteTodoItem(id);
+            await repository.DeleteTodoItemAsync(id);
 
             return NoContent();
         }
