@@ -13,6 +13,8 @@ namespace ProjectX.Api.Repositories
         private readonly IMongoCollection<TodoItem> todoItemsCollection;
 
         private readonly FilterDefinitionBuilder<TodoItem> filterDefinitionBuilder = Builders<TodoItem>.Filter;
+        
+        private readonly IndexKeysDefinitionBuilder<TodoItem> filterIndexDefinitionBuilder = Builders<TodoItem>.IndexKeys;
 
         public MongoDBTodoItemRepository(IMongoClient mongoClient)
         {
@@ -31,7 +33,7 @@ namespace ProjectX.Api.Repositories
             await todoItemsCollection.DeleteOneAsync(filter);
         }
 
-        public async Task<TodoItem> GetTodoItemAsync(Guid id)
+        public async Task<TodoItem> GetTodoItem(Guid id)
         {
             var filter = filterDefinitionBuilder.Eq(item => item.Id, id);
             return await todoItemsCollection.Find(filter).SingleOrDefaultAsync();
@@ -46,6 +48,14 @@ namespace ProjectX.Api.Repositories
         {
             var filter = filterDefinitionBuilder.Eq(existingitem => existingitem.Id, todoItem.Id);
             await todoItemsCollection.ReplaceOneAsync(filter, todoItem);
+        }
+        
+        public async Task<IEnumerable<TodoItem>> GetTodoSearchItemsAsync(String s)
+        {
+            var keys = filterIndexDefinitionBuilder.Text("Name");
+            todoItemsCollection.Indexes.CreateOneAsync(keys);
+            var filter = filterDefinitionBuilder.Text(s);
+            return await todoItemsCollection.Find(filter).ToListAsync();
         }
     }
 }

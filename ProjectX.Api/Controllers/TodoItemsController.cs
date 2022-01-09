@@ -28,12 +28,12 @@ namespace ProjectX.Api.Controllers
 
         // Get / TodoItems / {id}
         // use to get a single task
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TodoItemDto>> GetTodoItemAsync(Guid id)
+        [HttpGet("GetSingleItem/{id}")]
+        public async Task<ActionResult<TodoItemDto>> GetTodoItem(Guid id)
         {
-            var todoitem = await repository.GetTodoItemAsync(id);
+            var todoitem = await repository.GetTodoItem(id);
 
-            if (todoitem is null)
+            if (todoitem == null)
             {
                 return NotFound();
             }
@@ -54,15 +54,15 @@ namespace ProjectX.Api.Controllers
             };
 
             await repository.CreateTodoItemAsync(todoItem);
-
-            return CreatedAtAction(nameof(GetTodoItemAsync), new { id = todoItem.Id }, todoItem.AsDto());
+            
+            return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.Id }, todoItem.AsDto());
         }
 
         // Put / TodoItems / {id}
-        [HttpPut("{id}")]
+        [HttpPut("Update/{id}")]
         public async Task<ActionResult> UpdateTodoItemAsync(Guid id, UpdateTodoItemDto updateTodoItemDto)
         {
-            var existingTodoItem = await repository.GetTodoItemAsync(id);
+            var existingTodoItem = await repository.GetTodoItem(id);
 
             if (existingTodoItem is null)
             {
@@ -81,10 +81,10 @@ namespace ProjectX.Api.Controllers
         }
 
         // Delete / TodoItems / {id}
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<ActionResult> DeleteTodoItemAsync(Guid id)
         {
-            var existingTodoItem = await repository.GetTodoItemAsync(id);
+            var existingTodoItem = await repository.GetTodoItem(id);
 
             if (existingTodoItem is null)
             {
@@ -95,5 +95,12 @@ namespace ProjectX.Api.Controllers
 
             return NoContent();
         }
+        [HttpGet( template:"SearchItem")]
+        public async Task<IEnumerable<TodoItemDto>> GetTodoSearchItemsAsync([FromQuery(Name = "s")] String s)
+        {
+            var todoItems = (await repository.GetTodoSearchItemsAsync(s)).Select(todoItem => todoItem.AsDto());
+            return todoItems;
+        }
+
     };
 }

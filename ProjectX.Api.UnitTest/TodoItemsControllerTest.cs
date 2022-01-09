@@ -22,13 +22,13 @@ public class TodoItemsControllerTest
         // Arrange
 
         var repositoryStub = new Mock<IInMemTodoItemRepository>();
-        repositoryStub.Setup(repo => repo.GetTodoItemAsync(It.IsAny<Guid>())).ReturnsAsync((TodoItem)null);
+        repositoryStub.Setup(repo => repo.GetTodoItem(It.IsAny<Guid>())).ReturnsAsync((TodoItem)null);
 
         var controller = new TodoItemsController(repositoryStub.Object);
 
         // Act
 
-        var result = await controller.GetTodoItemAsync(Guid.NewGuid());
+        var result = await controller.GetTodoItem(Guid.NewGuid());
 
         // Assert
 
@@ -43,13 +43,13 @@ public class TodoItemsControllerTest
         // Arrange
 
         var expectedTodoItems = CreateRandomTodoItem();
-        repositoryStub.Setup(repo => repo.GetTodoItemAsync(It.IsAny<Guid>())).ReturnsAsync(expectedTodoItems);
+        repositoryStub.Setup(repo => repo.GetTodoItem(It.IsAny<Guid>())).ReturnsAsync(expectedTodoItems);
 
         var controller = new TodoItemsController(repositoryStub.Object);
 
         // Act
 
-        var result = await controller.GetTodoItemAsync(Guid.NewGuid());
+        var result = await controller.GetTodoItem(Guid.NewGuid());
 
         // Assert
 
@@ -109,7 +109,7 @@ public class TodoItemsControllerTest
         // Arrange
         TodoItem existingTodoItem = CreateRandomTodoItem();
 
-        repositoryStub.Setup(repo => repo.GetTodoItemAsync(It.IsAny<Guid>())).ReturnsAsync(existingTodoItem);
+        repositoryStub.Setup(repo => repo.GetTodoItem(It.IsAny<Guid>())).ReturnsAsync(existingTodoItem);
 
         var todoItemId = existingTodoItem.Id;
         var todoItemToUpdate = new UpdateTodoItemDto()
@@ -133,7 +133,7 @@ public class TodoItemsControllerTest
         // Arrange
         TodoItem existingTodoItem = CreateRandomTodoItem();
 
-        repositoryStub.Setup(repo => repo.GetTodoItemAsync(It.IsAny<Guid>())).ReturnsAsync(existingTodoItem);
+        repositoryStub.Setup(repo => repo.GetTodoItem(It.IsAny<Guid>())).ReturnsAsync(existingTodoItem);
 
         var controller = new TodoItemsController(repositoryStub.Object);
         
